@@ -273,6 +273,7 @@ module XCJobs
     attr_accessor :export_signing_identity
     attr_accessor :export_installer_identity
     attr_accessor :export_with_original_signing_identity
+    attr_accessor :export_options_plist
 
     def initialize(name = :export)
       super
@@ -285,7 +286,7 @@ module XCJobs
     end
 
     def export_format
-      @export_format || 'IPA'
+      @export_format || (@export_options_plist ? false : 'IPA')
     end
 
     def export_provisioning_profile=(provisioning_profile)
@@ -317,6 +318,7 @@ module XCJobs
         opts.concat(['-exportSigningIdentity', export_signing_identity]) if export_signing_identity
         opts.concat(['-exportInstallerIdentity', export_installer_identity]) if export_installer_identity
         opts.concat(['-exportWithOriginalSigningIdentity']) if export_with_original_signing_identity
+        opts.concat(['-exportOptionsPlist', export_options_plist]) if export_options_plist
       end
     end
   end
